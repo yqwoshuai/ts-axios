@@ -1,47 +1,15 @@
-import { buildURL } from './helpers/url'
-import { transformRequest, transformResponse } from './helpers/data'
-import { processHeaders } from './helpers/headers'
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
-import xhr from './xhr'
+import Axios from './core/Axios'
+import { AxiosInstance } from './types'
+import { extend } from './helpers/util'
 
-// 发起请求
-function axios(config: AxiosRequestConfig): AxiosPromise {
-  processConfig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+// 定义混合对象
+function createInstance(): AxiosInstance {
+  const context = new Axios()
+  const instance = Axios.prototype.request.bind(context)
+  extend(instance, context)
+  return instance as AxiosInstance
 }
 
-// 处理参数
-function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config)
-  // 处理 headers 要在 处理 data之前，因为处理data会把data转为json字符串
-  config.headers = transformHeaders(config)
-  config.data = transformRequestData(config)
-}
-
-// 处理参数中的url
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url, params)
-}
-
-// 处理参数中的data
-function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data)
-}
-
-// 处理参数中的headers
-function transformHeaders(config: AxiosRequestConfig): any {
-  // headers 默认值为 {} 保证 headers 存在
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
-// 处理返回响应中的data
-function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
-  return res
-}
+const axios = createInstance()
 
 export default axios
