@@ -26,6 +26,9 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransfromer | AxiosTransfromer[]
+  transformResponse?: AxiosTransfromer | AxiosTransfromer[]
+  [propName: string]: any
 }
 
 // 定义响应类型
@@ -52,6 +55,7 @@ export interface AxiosError extends Error {
 
 // 定义axios类扩展接口
 export interface Axios {
+  defaults: AxiosRequestConfig
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>
     response?: AxiosInterceptorManager<AxiosResponse>
@@ -76,6 +80,11 @@ export interface AxiosInstance extends Axios {
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+// 定义静态，让axios可以通关create方法生成新的实例
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
+
 // 定义拦截器类型
 export interface AxiosInterceptorManager<T> {
   // 设置拦截器
@@ -91,4 +100,8 @@ export interface ResolvedFn<T> {
 // 错误拦截器 类型
 export interface RejectedFn<T> {
   (error: any): any
+}
+
+export interface AxiosTransfromer {
+  (data: any, headers?: any): any
 }

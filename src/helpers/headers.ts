@@ -1,4 +1,5 @@
-import { isPlainObject } from './util'
+import { Method } from '../types'
+import { deepMerge, isPlainObject } from './util'
 
 // 格式化headers的key名称
 function normalizeHeaderName(headers: any, normalizedName: string): void {
@@ -45,4 +46,22 @@ export function parseHeaders(headers: string): any {
     parsed[key] = val
   })
   return parsed
+}
+
+// 将 headers中 common属性，和对应请求的属性提到headers中，并删除其他属性
+export function flattenHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers
+  }
+
+  // 提取属性 此处有属性优先级 直接定义在 headers上面的优先级最高，headers[method]上的其次，最后是common的公共属性
+  headers = deepMerge(headers.common, headers[method], headers)
+
+  // 需要被删除的字段，删除多余属性
+  const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+  methodsToDelete.forEach(method => {
+    delete headers[method]
+  })
+
+  return headers
 }
