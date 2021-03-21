@@ -7,6 +7,7 @@ import transform from '../core/transform'
 
 // 发起请求
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  throwIfCancel(config)
   processConfig(config)
   return xhr(config).then(res => {
     return transformResponseData(res)
@@ -30,4 +31,11 @@ function transformURL(config: AxiosRequestConfig): string {
 function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transform(res.data, res.headers, res.config.transformResponse)
   return res
+}
+
+// 处理抛出取消请求时的原因，仅抛出异常，请求依然发起
+function throwIfCancel(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
 }

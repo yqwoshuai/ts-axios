@@ -39,6 +39,8 @@ interceptorRouter()
 
 configRouter()
 
+cancelRouter()
+
 app.use(router)
 
 const port = process.env.PORT || 8080
@@ -142,5 +144,18 @@ function interceptorRouter() {
 function configRouter() {
   router.post('/config/post', function(req, res) {
     res.json(req.body)
+  })
+}
+
+function cancelRouter() {
+  router.get('/cancel/get', function(req, res) {
+    setTimeout(() => {
+      res.json('hello')
+    }, 20000)
+  })
+  router.post('/cancel/post', function(req, res) {
+    setTimeout(() => {
+      res.json(req.body)
+    }, 1000)
   })
 }

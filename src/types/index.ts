@@ -28,6 +28,8 @@ export interface AxiosRequestConfig {
   timeout?: number
   transformRequest?: AxiosTransfromer | AxiosTransfromer[]
   transformResponse?: AxiosTransfromer | AxiosTransfromer[]
+  cancelToken?: CancelToken
+
   [propName: string]: any
 }
 
@@ -83,6 +85,10 @@ export interface AxiosInstance extends Axios {
 // 定义静态，让axios可以通关create方法生成新的实例
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
+
+  CancelToken: CancelTokenStatic
+  Cancel: CancelStatic
+  isCancel: (value: any) => boolean
 }
 
 // 定义拦截器类型
@@ -104,4 +110,40 @@ export interface RejectedFn<T> {
 
 export interface AxiosTransfromer {
   (data: any, headers?: any): any
+}
+
+// 定义取消请求实例类型
+export interface CancelToken {
+  promise: Promise<Cancel>
+  reason?: Cancel
+
+  throwIfRequested(): void
+}
+// 定义取消请求方法类型
+export interface Canceler {
+  (message?: string): void
+}
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+// 定义取消请求方法参数类型
+export interface CancelExecutor {
+  (cancel: Canceler): void
+}
+
+// 定义取消请求类的类型
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken
+  source(): CancelTokenSource
+}
+
+// 定义取消请求判断类型
+export interface Cancel {
+  message?: string
+}
+// 定义取消请求判断类的类型
+export interface CancelStatic {
+  new (message?: string): Cancel
 }
