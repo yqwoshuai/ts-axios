@@ -5,13 +5,27 @@ import { createError } from '../helpers/error'
 // 发起请求
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
+    const {
+      data = null,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      cancelToken,
+      withCredentials
+    } = config
 
     const request = new XMLHttpRequest()
 
     // 设置响应返回data的解析方式
     if (responseType) {
       request.responseType = responseType
+    }
+
+    // 跨域携带cookie
+    if (withCredentials) {
+      request.withCredentials = withCredentials
     }
 
     // 设置请求超时
