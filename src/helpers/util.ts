@@ -15,6 +15,11 @@ export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]'
 }
 
+// 判断上传数据类型
+export function isFormData(val: any): val is FormData {
+  return typeof val !== 'undefined' && val instanceof FormData
+}
+
 // 混合类型继承
 export function extend<T, U>(to: T, from: U): T & U {
   for (const key in from) {
