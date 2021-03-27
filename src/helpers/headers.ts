@@ -20,7 +20,7 @@ export function processHeaders(headers: any, data: any): any {
   // 当data是普通对象时改变headers中Content-Type的值，让后端能正确解析
   if (isPlainObject(data)) {
     if (headers && !headers['Content-Type']) {
-      headers['Content-Type'] = 'application/json;charset=utf-8'
+      headers['Content-Type'] = 'application/json; charset=utf-8'
     }
   }
   return headers
