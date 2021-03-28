@@ -1,4 +1,4 @@
-import { isDate, isPlainObject } from './util'
+import { isDate, isPlainObject, isURLSearchParams } from './util'
 
 interface URLOrigin {
   protocol: string
@@ -18,37 +18,49 @@ function encode(val: string): string {
 }
 
 // 格式化get请求的url，将params参数拼接到链接后
-export function buildURL(url: string, params?: any): string {
+export function buildURL(
+  url: string,
+  params?: any,
+  paramsSerializer?: (params: any) => string
+): string {
   if (!params) {
     return url
   }
 
-  const parts: string[] = []
-  // 处理传入的参数
-  Object.keys(params).forEach(key => {
-    const val = params[key]
-    if (val === null || typeof val === 'undefined') {
-      return
-    }
-    // 将所有参数统一成数组的形式，统一处理
-    let values = []
-    if (Array.isArray(val)) {
-      values = val
-      key += '[]'
-    } else {
-      values = [val]
-    }
-    values.forEach(val => {
-      if (isDate(val)) {
-        val = val.toISOString()
-      } else if (isPlainObject(val)) {
-        val = JSON.stringify(val)
+  // 处理格式化参数
+  let serializedParams
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params)
+  } else if (isURLSearchParams(params)) {
+    serializedParams = params.toString()
+  } else {
+    const parts: string[] = []
+    // 处理传入的参数
+    Object.keys(params).forEach(key => {
+      const val = params[key]
+      if (val === null || typeof val === 'undefined') {
+        return
       }
-      parts.push(`${encode(key)}=${encode(val)}`)
+      // 将所有参数统一成数组的形式，统一处理
+      let values = []
+      if (Array.isArray(val)) {
+        values = val
+        key += '[]'
+      } else {
+        values = [val]
+      }
+      values.forEach(val => {
+        if (isDate(val)) {
+          val = val.toISOString()
+        } else if (isPlainObject(val)) {
+          val = JSON.stringify(val)
+        }
+        parts.push(`${encode(key)}=${encode(val)}`)
+      })
     })
-  })
-  // 将所有参数拼接为字符串
-  let serializedParams = parts.join('&')
+    // 将所有参数拼接为字符串
+    serializedParams = parts.join('&')
+  }
 
   // 处理过后的参数字符串存在
   if (serializedParams) {
