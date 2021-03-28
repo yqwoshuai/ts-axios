@@ -77,6 +77,15 @@ export function buildURL(
   return url
 }
 
+// 链接默认值
+export function isAbsoluteURL(url: string): boolean {
+  return /(^[a-z][a-z\d\+\-\.]*:)\/\//i.test(url)
+}
+// 存在默认链接时拼接链接
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
+}
+
 // 利用a标签的dom解析 protocol 和 host
 const urlParsingNode = document.createElement('a')
 const currentOrigin = resolveURL(window.location.href)
