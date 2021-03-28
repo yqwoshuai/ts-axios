@@ -1,4 +1,4 @@
-import axios from '../../src'
+import axios, { AxiosError } from '../../src'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
 
@@ -82,15 +82,37 @@ import NProgress from 'nprogress'
 //   }
 // })
 
-axios.post(
-  '/more/post',
-  {
-    a: 1
-  },
-  {
-    auth: {
-      username: 'abc',
-      password: '123456'
+// axios.post(
+//   '/more/post',
+//   {
+//     a: 1
+//   },
+//   {
+//     auth: {
+//       username: 'abc',
+//       password: '123456'
+//     }
+//   }
+// )
+
+axios
+  .get('/more/304')
+  .then(res => {
+    console.log(res)
+  })
+  .catch((e: AxiosError) => {
+    console.log(e.message)
+  })
+
+axios
+  .get('/more/304', {
+    validataStatus(status) {
+      return status >= 200 && status < 400
     }
-  }
-)
+  })
+  .then(res => {
+    console.log(res)
+  })
+  .catch((e: AxiosError) => {
+    console.log(e.message)
+  })

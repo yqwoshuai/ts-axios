@@ -26,7 +26,11 @@ const defaults: AxiosRequestConfig = {
     function(data: any) {
       return transformResponse(data)
     }
-  ]
+  ],
+
+  validataStatus(status: number): boolean {
+    return status >= 200 && status < 300
+  }
 }
 
 // 定义无data请求的默认header
