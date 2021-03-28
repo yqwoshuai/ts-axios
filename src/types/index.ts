@@ -34,6 +34,7 @@ export interface AxiosRequestConfig {
   xsrfHeaderName?: string
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
+  auth?: AxiosBasicCredentials
 
   [propName: string]: any
 }
@@ -151,4 +152,10 @@ export interface Cancel {
 // 定义取消请求判断类的类型
 export interface CancelStatic {
   new (message?: string): Cancel
+}
+
+// 定义认证类型
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }
