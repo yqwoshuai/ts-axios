@@ -3,6 +3,7 @@ import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
 import qs from 'qs'
 
+// withCredentials功能，跨域携带cookie
 // document.cookie = 'a=b'
 
 // axios.get('/more/get').then(res => {
@@ -15,6 +16,7 @@ import qs from 'qs'
 //   console.log(res)
 // })
 
+// xsrf验证功能
 // const instance = axios.create({
 //   xsrfCookieName: 'XSRF-TOKEN-D',
 //   xsrfHeaderName: 'X-XSRF-TOKEN-D'
@@ -24,6 +26,7 @@ import qs from 'qs'
 //   console.log(res)
 // })
 
+// 请求进度功能
 // const instance = axios.create()
 
 // function calculatePrecentage(loaded: number, total: number) {
@@ -83,6 +86,7 @@ import qs from 'qs'
 //   }
 // })
 
+// http授权，auth认证功能
 // axios.post(
 //   '/more/post',
 //   {
@@ -96,6 +100,7 @@ import qs from 'qs'
 //   }
 // )
 
+// 自定义合法状态码功能
 // axios
 //   .get('/more/304')
 //   .then(res => {
@@ -118,6 +123,7 @@ import qs from 'qs'
 //     console.log(e.message)
 //   })
 
+// 自定义格式化url功能
 // axios.get('/more/get', { params: new URLSearchParams('a=b&c=d') }).then(res => {
 //   console.log(res)
 // })
@@ -152,10 +158,42 @@ import qs from 'qs'
 //     console.log(res)
 //   })
 
-const instance = axios.create({
-  baseURL: 'https://img4.mukewang.com/'
+// baseURL功能
+// const instance = axios.create({
+//   baseURL: 'https://img4.mukewang.com/'
+// })
+
+// instance.get('60595b950001d3cd17920764.jpg')
+
+// instance.get('https://img1.mukewang.com/605d74580001b39b17920764.jpg')
+
+// all 和 spread 方法，getUri功能 Axios类功能
+function getA() {
+  return axios.get('/more/A')
+}
+function getB() {
+  return axios.get('/more/B')
+}
+
+axios.all([getA(), getB()]).then(
+  axios.spread(function(resA, resB) {
+    console.log(resA.data)
+    console.log(resB.data)
+  })
+)
+
+axios.all([getA(), getB()]).then(([resA, resB]) => {
+  console.log(resA.data)
+  console.log(resB.data)
 })
 
-instance.get('60595b950001d3cd17920764.jpg')
-
-instance.get('https://img1.mukewang.com/605d74580001b39b17920764.jpg')
+const fakeConfig = {
+  baseURL: 'https://www.baidu.com/',
+  url: 'user/12345',
+  params: {
+    idClient: 1,
+    idTest: 2,
+    testString: 'thisIsATest'
+  }
+}
+console.log(axios.getUri(fakeConfig))
