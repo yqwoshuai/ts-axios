@@ -49,6 +49,7 @@ export default class Axios {
 
     // 合并默认配置
     config = mergeConfig(this.defaults, config)
+    config.method = config.method.toLowerCase()
 
     // 定义整个拦截链，初始时只有发送请求本身
     const chain: PromiseChain<any>[] = [
