@@ -64,12 +64,12 @@ import axios from '../../src/index'
 // axios({
 //   method: 'post',
 //   url: '/base/post',
-//   data: {
-//     a: 1,
-//     b: 2
-//   }
+//   data: false
 // })
 
+axios.post('/base/post', false).then(res => {
+  console.log(res)
+})
 // const arr = new Int32Array([21, 31])
 
 // axios({
@@ -100,25 +100,25 @@ import axios from '../../src/index'
 //   data: searchParams
 // })
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  data: {
-    a: 1,
-    b: 2
-  }
-}).then((res) => {
-  console.log(res)
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// }).then((res) => {
+//   console.log(res)
+// })
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  data: {
-    a: 1,
-    b: 2
-  },
-  responseType: 'json'
-}).then((res) => {
-  console.log(res)
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   },
+//   responseType: 'json'
+// }).then((res) => {
+//   console.log(res)
+// })
