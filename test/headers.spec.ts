@@ -27,25 +27,26 @@ describe('request', () => {
     jasmine.Ajax.uninstall()
   })
 
-  // test('use default common headers', () => {
-  //   const headers = axios.defaults.headers.common
-  //   axios('/foo')
-  //   return getAjaxRequest().then(request => {
-  //     for (let key in headers) {
-  //       if (headers.hasOwnProperty(key)) {
-  //         expect(request.requestHeaders[key]).toEqual(headers[key])
-  //       }
-  //     }
-  //   })
-  // })
+  test('use default common headers', () => {
+    const headers = axios.defaults.headers.common
+    axios('/foo')
+    return getAjaxRequest().then(request => {
+      for (let key in headers) {
+        if (headers.hasOwnProperty(key)) {
+          expect(request.requestHeaders[key]).toEqual(headers[key])
+        }
+      }
+    })
+  })
 
-  // test('add extra headers for post', () => {
-  //   axios.post('/foo', 'fizz=buzz')
-  //   return getAjaxRequest().then(request => {
-  //     testHeaderValue(request.requestHeaders, 'Content-Type', 'application/x-www-form-urlencoded')
-  //   })
-  // })
+  test('add extra headers for post', () => {
+    axios.post('/foo', 'fizz=buzz')
+    return getAjaxRequest().then(request => {
+      testHeaderValue(request.requestHeaders, 'Content-Type', 'application/x-www-form-urlencoded')
+    })
+  })
 
+  // 这条测试放在下一条测试之后会报错
   test('preserve content-type if data is false', () => {
     axios.post('/foo', false)
     return getAjaxRequest().then(request => {
@@ -63,12 +64,12 @@ describe('request', () => {
     })
   })
 
-  // test('remove content-type if data is empty', () => {
-  //   axios.post('/foo')
-  //   return getAjaxRequest().then(request => {
-  //     testHeaderValue(request.requestHeaders, 'Content-Type', undefined)
-  //   })
-  // })
+  test('remove content-type if data is empty', () => {
+    axios.post('/foo')
+    return getAjaxRequest().then(request => {
+      testHeaderValue(request.requestHeaders, 'Content-Type', undefined)
+    })
+  })
 
   test('remove content-type if data is FDormData', () => {
     const data = new FormData()
