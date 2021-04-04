@@ -1,10 +1,10 @@
-import { AxiosTransfromer } from '../types'
+import { AxiosTransformer } from '../types'
 
 // 定义处理响应配置方法
 export default function transform(
   data: any,
   headers: any,
-  fns?: AxiosTransfromer | AxiosTransfromer[]
+  fns?: AxiosTransformer | AxiosTransformer[]
 ): any {
   if (!fns) {
     return data

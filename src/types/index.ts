@@ -26,8 +26,8 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
-  transformRequest?: AxiosTransfromer | AxiosTransfromer[]
-  transformResponse?: AxiosTransfromer | AxiosTransfromer[]
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
   cancelToken?: CancelToken
   withCredentials?: boolean
   xsrfCookieName?: string
@@ -129,7 +129,7 @@ export interface RejectedFn<T> {
   (error: any): any
 }
 
-export interface AxiosTransfromer {
+export interface AxiosTransformer {
   (data: any, headers?: any): any
 }
 
